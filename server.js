@@ -6,8 +6,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Initialize Firebase Admin SDK
-const serviceAccount = require("./serviceAccount.json");
+// Load Firebase credentials from Railway's environment variable
+const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -38,5 +39,5 @@ app.post("/classes", async (req, res) => {
 });
 
 // Start the server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
